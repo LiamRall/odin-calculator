@@ -42,7 +42,19 @@ function operate(num1, num2, operator) {
 
 function updateScreen(value){
     const resultDiv = document.getElementById("result");
-    resultDiv.textContent = value;
+    if(value % 1 === 0){
+        resultDiv.textContent = value;
+    } else {
+        resultDiv.textContent = Number(value.toFixed(4)) + "";
+    }
+
+}
+
+function resetOperatorPressedState(){
+    const btns = document.querySelectorAll('.operator');
+    btns.forEach((btn) => {
+            btn.style.opacity = 1;
+    })
 }
 
 let num1 = ""
@@ -55,6 +67,7 @@ const numberButton = document.querySelectorAll('.number');
 numberButton.forEach((button) => {
     button.addEventListener('click', () => {
         const inputValue = button.textContent;
+        resetOperatorPressedState();
         if (num1 === "") {
             num1 = inputValue;
             screenValue = inputValue;
@@ -90,6 +103,7 @@ operatorButton.forEach((button) => {
                 operator = "";
                 break;
             default:
+                button.style.opacity = 0.8;
                 if (operator === ""){
                     operator = currentOperator;
                 } else if(operator !== ""){
@@ -104,3 +118,26 @@ operatorButton.forEach((button) => {
     });
 });
 
+const functionButtons = document.querySelectorAll('.function');
+functionButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const currentFunction = button.textContent;
+        switch (currentFunction) {
+            case 'AC':
+                updateScreen(0);
+                screenValue = "";
+                num1 = "";
+                num2 = "";
+                operator = "";
+                break;
+            case '+/-':
+                screenValue = Number(screenValue) * -1;
+                updateScreen(screenValue);
+                break;
+            case '%':
+                screenValue = Number(screenValue) / 100;
+                updateScreen(screenValue);
+                break;
+        }
+    })
+})

@@ -95,6 +95,9 @@ footer{
 .button.operator{
     background-color: #ffb200;
 }
+.button.operator.pressed{
+    opacity: 0.8;
+}
 
 .button.function{
     background-color: #939597;
