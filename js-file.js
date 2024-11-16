@@ -40,20 +40,24 @@ function operate(num1, num2, operator) {
     return result;
 }
 
-function updateScreen(value){
+function updateScreen(value) {
     const resultDiv = document.getElementById("result");
-    if(value % 1 === 0){
+    if(value === "ERROR") {
         resultDiv.textContent = value;
-    } else {
-        resultDiv.textContent = Number(value.toFixed(4)) + "";
+    } else if((value+"").endsWith(".") || (value+"").endsWith("0")){
+        resultDiv.textContent = value;
     }
-
+    else if (value % 1 === 0) {
+        resultDiv.textContent = parseFloat(value)+"";
+    } else if (value % 1 !== 0) {
+        resultDiv.textContent = Number(parseFloat(value).toFixed(4)) + "";
+    }
 }
 
-function resetOperatorPressedState(){
+function resetOperatorPressedState() {
     const btns = document.querySelectorAll('.operator');
     btns.forEach((btn) => {
-            btn.style.opacity = 1;
+        btn.style.opacity = 1;
     })
 }
 
@@ -67,21 +71,24 @@ const numberButton = document.querySelectorAll('.number');
 numberButton.forEach((button) => {
     button.addEventListener('click', () => {
         const inputValue = button.textContent;
+        screenValue = screenValue +"";
         resetOperatorPressedState();
-        if (num1 === "") {
+        if(screenValue.includes('.') && inputValue === '.') {
+
+        }
+        else if (num1 === "") {
             num1 = inputValue;
             screenValue = inputValue;
             updateScreen(screenValue);
-        } else if(num2 === "" && operator === "") {
+        } else if (num2 === "" && operator === "") {
             num1 += inputValue;
             screenValue += inputValue;
             updateScreen(screenValue);
-        } else if(num2 === ""){
+        } else if (num2 === "") {
             num2 = inputValue;
             screenValue = inputValue;
             updateScreen(screenValue);
-        }
-        else {
+        } else {
             num2 += inputValue;
             screenValue += inputValue;
             updateScreen(screenValue);
@@ -104,9 +111,9 @@ operatorButton.forEach((button) => {
                 break;
             default:
                 button.style.opacity = 0.8;
-                if (operator === ""){
+                if (operator === "") {
                     operator = currentOperator;
-                } else if(operator !== ""){
+                } else if (operator !== "") {
                     screenValue = operate(num1, num2, operator);
                     updateScreen(screenValue);
                     num1 = screenValue;
@@ -133,10 +140,20 @@ functionButtons.forEach((button) => {
             case '+/-':
                 screenValue = Number(screenValue) * -1;
                 updateScreen(screenValue);
+                if (num1 !== "" && num2 === "") {
+                    num1 = screenValue;
+                } else if (num1 !== "" && num2 !== "") {
+                    num2 = screenValue;
+                }
                 break;
             case '%':
                 screenValue = Number(screenValue) / 100;
                 updateScreen(screenValue);
+                if (num1 !== "" && num2 === "") {
+                    num1 = screenValue;
+                } else if (num1 !== "" && num2 !== "") {
+                    num2 = screenValue;
+                }
                 break;
         }
     })
