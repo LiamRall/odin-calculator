@@ -82,6 +82,10 @@ footer{
     border-radius: 50%;
     font-size: 1rem;
     font-weight: bold;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none;
 }
 
 .button:hover{
